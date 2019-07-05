@@ -16,7 +16,8 @@
  */
 
 package demo.springone2018.saml.config;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
@@ -28,21 +29,25 @@ import org.springframework.security.saml.provider.identity.config.SamlIdentityPr
 
 @Configuration
 public class BeanConfig extends SamlIdentityProviderServerBeanConfiguration {
+	private static final Log logger = LogFactory.getLog(SamlIdentityProviderServerBeanConfiguration.class);
 	private final AppConfig config;
 
 	public BeanConfig(AppConfig config) {
+		logger.info("Construtor called");
 		this.config = config;
 	}
 
 	@Override
 	protected SamlServerConfiguration getDefaultHostSamlServerConfiguration() {
+		logger.info("getDefaultHostSamlServerConfiguration called");
 		return config;
 	}
 
 	@Bean
 	public UserDetailsService userDetailsService() {
+		logger.info("userDetailsService called");
 		UserDetails userDetails = User.withDefaultPasswordEncoder()
-			.username("peter_parker")
+			.username("fabiano")
 			.password("password")
 			.roles("USER")
 			.build();

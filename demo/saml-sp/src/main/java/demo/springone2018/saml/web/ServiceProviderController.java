@@ -16,9 +16,12 @@
  */
 package demo.springone2018.saml.web;
 
+import static java.util.Collections.emptyList;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -27,6 +30,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,28 +40,24 @@ import org.springframework.security.saml.SamlTransformer;
 import org.springframework.security.saml.saml2.attribute.Attribute;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
-import static java.util.Collections.emptyList;
 
 @Controller
 public class ServiceProviderController {
 
-	private static final Log logger =LogFactory.getLog(ServiceProviderController.class);
+	private static final Log logger = LogFactory.getLog(ServiceProviderController.class);
 	private SamlTransformer transformer;
 
 	@Autowired
 	public ServiceProviderController setTransformer(SamlTransformer transformer) {
+		logger.info("ServiceProviderController constructor called");
 		this.transformer = transformer;
 		return this;
 	}
 
-	@RequestMapping(value = {"/", "/index", "/logged-in"})
+	@GetMapping(value = {"/", "/index", "/logged-in"})
 	public String home(Model model) {
 		logger.info("Sample SP Application - You are logged in!");
 		populateModel(model);
@@ -64,6 +65,7 @@ public class ServiceProviderController {
 	}
 
 	private void populateModel(Model model) {
+		logger.info("ServiceProviderController populateModel called");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<Attribute> attributes = emptyList();
 		String xml = null;
@@ -78,6 +80,7 @@ public class ServiceProviderController {
 
 
 	private String prettyPrint(String xml) {
+		logger.info("ServiceProviderController prettyPrint called: \n" + xml);
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();

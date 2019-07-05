@@ -140,7 +140,7 @@ spring:
         providers:
         - alias: spring-security-saml-idp
           metadata: http://localhost:9092/demo-idp/saml/idp/metadata
-          link-text: Spring Security SAML IDP (local)
+          link-text: Spring Security SAML IDP (localhost)
           name-id: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
           assertion-consumer-service-index: 0
         - alias: simplesamlphp
@@ -148,5 +148,5 @@ spring:
           link-text: Simple SAML PHP IDP on Cloud Foundry
         - alias: spring-security-saml-idp-sp
           metadata: http://localhost:9093/demo-idp-sp/saml/idp/metadata
-          link-text: Spring Security Combo IDP/SP (local)
+          link-text: Spring Security Combo IDP/SP (localhost)
           name-id: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress

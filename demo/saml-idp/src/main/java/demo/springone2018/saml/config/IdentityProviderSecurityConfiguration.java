@@ -17,6 +17,10 @@
 
 package demo.springone2018.saml.config;
 
+import static org.springframework.security.saml.provider.identity.config.SamlIdentityProviderSecurityDsl.identityProvider;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,11 +29,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.provider.identity.config.SamlIdentityProviderSecurityConfiguration;
 
-import static org.springframework.security.saml.provider.identity.config.SamlIdentityProviderSecurityDsl.identityProvider;
-
 @EnableWebSecurity
 public class IdentityProviderSecurityConfiguration {
 
+	private static final Log logger = LogFactory.getLog(IdentityProviderSecurityConfiguration.class);
+	
 	@Configuration
 	@Order(1)
 	public static class SamlSecurity extends SamlIdentityProviderSecurityConfiguration {
@@ -39,12 +43,14 @@ public class IdentityProviderSecurityConfiguration {
 
 		public SamlSecurity(BeanConfig beanConfig, @Qualifier("appConfig") AppConfig appConfig) {
 			super("/saml/idp/", beanConfig);
+			logger.info("SamlSecurity constructor called");
 			this.appConfig = appConfig;
 			this.beanConfig = beanConfig;
 		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			logger.info("SamlSecurity configure called");
 			super.configure(http);
 			http
 				.userDetailsService(beanConfig.userDetailsService()).formLogin();
@@ -59,11 +65,13 @@ public class IdentityProviderSecurityConfiguration {
 		private final BeanConfig beanConfig;
 
 		public AppSecurity(BeanConfig beanConfig) {
+			logger.info("AppSecurity contructor called");
 			this.beanConfig = beanConfig;
 		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			logger.info("AppSecurity configure called");
 			http
 				.antMatcher("/**")
 				.authorizeRequests()
