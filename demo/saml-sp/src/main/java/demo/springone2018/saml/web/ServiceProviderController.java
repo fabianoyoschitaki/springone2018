@@ -69,12 +69,16 @@ public class ServiceProviderController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		List<Attribute> attributes = emptyList();
 		String xml = null;
+		String user = "User";
 		if (authentication instanceof SamlAuthentication) {
+			logger.info("### authentication instanceof SamlAuthentication");
 			SamlAuthentication sa = (SamlAuthentication)authentication;
 			attributes = sa.getAssertion().getAttributes();
+			user = sa.getAssertion().getSubject().getPrincipal().getValue();
 			xml = transformer.toXml(sa.getAssertion());
 		}
 		model.addAttribute("attributes", attributes);
+		model.addAttribute("user", user);
 		model.addAttribute("xml", prettyPrint(xml));
 	}
 
