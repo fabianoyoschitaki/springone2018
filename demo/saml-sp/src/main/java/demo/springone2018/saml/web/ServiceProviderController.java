@@ -80,7 +80,6 @@ public class ServiceProviderController {
 
 
 	private String prettyPrint(String xml) {
-		logger.info("ServiceProviderController prettyPrint called: \n" + xml);
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -94,7 +93,9 @@ public class ServiceProviderController {
 			StreamResult result = new StreamResult(new StringWriter());
 			DOMSource source = new DOMSource(doc);
 			transformer.transform(source, result);
-			return result.getWriter().toString();
+			String prettyPrint = result.getWriter().toString();
+			logger.info("ServiceProviderController prettyPrint called: \n" + prettyPrint);
+			return prettyPrint;
 		} catch (Exception x) {
 			return xml;
 		}
